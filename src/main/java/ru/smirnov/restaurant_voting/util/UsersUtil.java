@@ -6,7 +6,7 @@ import ru.smirnov.restaurant_voting.model.User;
 import ru.smirnov.restaurant_voting.to.UserTo;
 
 @UtilityClass
-public class UserUtil {
+public class UsersUtil {
 
     public static User createNewFromTo(UserTo userTo) {
         return new User(null, userTo.getName(), userTo.getEmail().toLowerCase(), userTo.getPassword(), Role.USER);

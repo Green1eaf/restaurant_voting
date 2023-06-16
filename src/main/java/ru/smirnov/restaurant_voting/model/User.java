@@ -49,8 +49,8 @@ public class User extends NamedEntity implements HasIdAndEmail {
 
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_role",
-    joinColumns = @JoinColumn(name = "user_id"),
-    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role"}, name = "ur_user_role"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_role"))
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     @JoinColumn

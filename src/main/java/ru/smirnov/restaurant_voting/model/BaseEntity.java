@@ -19,7 +19,7 @@ public abstract class BaseEntity implements Persistable<Integer>, HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY) // https://stackoverflow.com/a/28025008/548473
     protected Integer id;
 
     public int id() {
@@ -33,6 +33,7 @@ public abstract class BaseEntity implements Persistable<Integer>, HasId {
     }
 
     //    https://stackoverflow.com/questions/1638723
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -49,6 +50,7 @@ public abstract class BaseEntity implements Persistable<Integer>, HasId {
         return id == null ? 0 : id;
     }
 
+    @Override
     public String toString() {
         return getClass().getSimpleName() + ":" + id;
     }

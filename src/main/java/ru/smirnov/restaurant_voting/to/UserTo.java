@@ -27,6 +27,7 @@ public class UserTo extends NamedTo implements HasIdAndEmail {
         this.password = password;
     }
 
+    @Override
     public String toString() {
         return "UserTo:" + id + '[' + email + ']';
     }

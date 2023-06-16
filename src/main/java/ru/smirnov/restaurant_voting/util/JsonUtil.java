@@ -39,7 +39,7 @@ public class JsonUtil {
         try {
             return mapper.writeValueAsString(obj);
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException("Invalid write JSON:\n'" + obj + "'", e);
+            throw new IllegalStateException("Invalid write to JSON:\n'" + obj + "'", e);
         }
     }
 
@@ -48,8 +48,7 @@ public class JsonUtil {
     }
 
     public static <T> String writeAdditionProps(T obj, Map<String, Object> addProps) {
-        Map<String, Object> map = mapper.convertValue(obj, new TypeReference<>() {
-        });
+        Map<String, Object> map = mapper.convertValue(obj, new TypeReference<>() {});
         map.putAll(addProps);
         return writeValue(map);
     }

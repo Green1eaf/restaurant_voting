@@ -14,7 +14,7 @@ import ru.smirnov.restaurant_voting.util.validation.NoHtml;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class NamedEntity extends BaseEntity {
+public abstract class NamedEntity extends BaseEntity {
 
     @NotBlank
     @Size(min = 2, max = 128)
@@ -27,6 +27,7 @@ public class NamedEntity extends BaseEntity {
         this.name = name;
     }
 
+    @Override
     public String toString() {
         return super.toString() + '[' + name + ']';
     }

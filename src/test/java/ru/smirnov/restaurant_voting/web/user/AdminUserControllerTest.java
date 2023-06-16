@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.smirnov.restaurant_voting.web.user.AdminUserController.REST_URL;
 import static ru.smirnov.restaurant_voting.web.user.UserTestData.*;
 
-public class AdminUserControllerTest extends AbstractControllerTest {
+class AdminUserControllerTest extends AbstractControllerTest {
 
     private static final String REST_URL_SLASH = REST_URL + '/';
 

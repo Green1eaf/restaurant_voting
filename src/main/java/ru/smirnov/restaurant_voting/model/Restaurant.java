@@ -25,4 +25,9 @@ public class Restaurant extends NamedEntity {
     @NoHtml
     @Nullable
     private String address;
+
+    public Restaurant(Integer id, String name, @Nullable String address) {
+        super(id, name);
+        this.address = address;
+    }
 }

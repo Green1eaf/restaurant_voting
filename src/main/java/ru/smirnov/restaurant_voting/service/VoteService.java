@@ -2,6 +2,7 @@ package ru.smirnov.restaurant_voting.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import ru.smirnov.restaurant_voting.error.DataConflictException;
 import ru.smirnov.restaurant_voting.model.User;
@@ -18,7 +19,9 @@ import java.util.Optional;
 public class VoteService {
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
-    private static final LocalTime DEADLINE = LocalTime.of(11, 0);
+
+    @Setter
+    static LocalTime deadline = LocalTime.of(11, 0);
 
     @Transactional
     public Vote createToday(User user, int restaurantId) {
@@ -34,7 +37,7 @@ public class VoteService {
     @Transactional
     public void updateToday(User user, int restaurantId, boolean deleteVote) {
         LocalDateTime now = LocalDateTime.now();
-        if (now.toLocalTime().isAfter(DEADLINE)) {
+        if (now.toLocalTime().isAfter(deadline)) {
             throw new DataConflictException("Deadline for changing vote has been passed");
         }
         Optional<Vote> dbVote = repository.getByUserIdAndDate(user.id(), now.toLocalDate());

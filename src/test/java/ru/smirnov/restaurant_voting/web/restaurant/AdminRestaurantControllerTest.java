@@ -7,6 +7,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.smirnov.restaurant_voting.model.Restaurant;
+import ru.smirnov.restaurant_voting.repository.MenuItemRepository;
 import ru.smirnov.restaurant_voting.repository.RestaurantRepository;
 import ru.smirnov.restaurant_voting.repository.VoteRepository;
 import ru.smirnov.restaurant_voting.util.JsonUtil;
@@ -29,6 +30,8 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     private RestaurantRepository restaurantRepository;
     @Autowired
     private VoteRepository voteRepository;
+    @Autowired
+    private MenuItemRepository menuItemRepository;
 
     @Test
     @WithUserDetails(value = ADMIN_MAIL)
@@ -45,6 +48,7 @@ class AdminRestaurantControllerTest extends AbstractControllerTest {
     @WithUserDetails(value = ADMIN_MAIL)
     void deleteWithoutVote() throws Exception {
         voteRepository.deleteByRestaurantId(MAC_ID);
+        menuItemRepository.deleteByRestaurantId(MAC_ID);
         perform(MockMvcRequestBuilders.delete(REST_URL_SLASH + MAC_ID))
                 .andDo(print())
                 .andExpect(status().isNoContent());

@@ -21,13 +21,13 @@ public class RestaurantTestData {
     public static final Restaurant shalypin = new Restaurant(SHALYPIN_ID, "Шаляпин", "ул. Мира, 67");
     public static final Restaurant wasabi = new Restaurant(WASABI_ID, "Васаби", "ул. Бумажная, д.20");
 
-    public static final DishRef mac_fof = new DishRef(1, "Филе-о-Фиш", 12700);
-    public static final DishRef mac_chb = new DishRef(2, "Чикенбургер", 5000);
-    public static final DishRef mac_chm20 = new DishRef(3, "Чикен Макнаггетс (20шт)", 27200);
+    public static final DishRef mac_fof = new DishRef(1, "Филе-о-Фиш", 12700, mac);
+    public static final DishRef mac_chb = new DishRef(2, "Чикенбургер", 5000, mac);
+    public static final DishRef mac_chm20 = new DishRef(3, "Чикен Макнаггетс (20шт)", 27200, mac);
 
-    public static final DishRef wasabi_rsh = new DishRef(7, "Ролл Сочная креветка", 25700);
-    public static final DishRef wasabi_rf = new DishRef(8, "Ролл Огонь", 31700);
-    public static final DishRef wasabi_rch = new DishRef(9, "Ролл Калифорния с цыпленком", 12900);
+    public static final DishRef wasabi_rsh = new DishRef(7, "Ролл Сочная креветка", 25700, wasabi);
+    public static final DishRef wasabi_rf = new DishRef(8, "Ролл Огонь", 31700, wasabi);
+    public static final DishRef wasabi_rch = new DishRef(9, "Ролл Калифорния с цыпленком", 12900, wasabi);
 
     public static final MenuItem mac_1 = new MenuItem(1, LocalDate.now(), mac, mac_fof);
     public static final MenuItem mac_2 = new MenuItem(2, LocalDate.now(), mac, mac_chb);

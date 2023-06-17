@@ -1,5 +1,6 @@
 package ru.smirnov.restaurant_voting.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.smirnov.restaurant_voting.error.DataConflictException;
@@ -11,6 +12,11 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 public interface MenuItemRepository extends BaseRepository<MenuItem> {
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM MenuItem mi WHERE mi.restaurant.id=:restaurantId")
+    void deleteByRestaurantId(int restaurantId);
 
     @Query("SELECT mi FROM MenuItem mi WHERE mi.id=:id AND mi.restaurant.id=:restaurantId")
     Optional<MenuItem> get(int restaurantId, int id);

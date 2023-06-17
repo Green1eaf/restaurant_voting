@@ -1,13 +1,16 @@
 package ru.smirnov.restaurant_voting.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
 import ru.smirnov.restaurant_voting.util.validation.NoHtml;
+
+import java.util.List;
 
 @Entity
 @Table(name = "restaurant", uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "address"}, name = "uk_restaurant")})
@@ -25,6 +28,14 @@ public class Restaurant extends NamedEntity {
     @NoHtml
     @Nullable
     private String address;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    @OrderBy("name ASC")
+    @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ToString.Exclude
+    @JsonInclude(JsonInclude.Include.NON_EMPTY) //https://stackoverflow.com/a/27964775/548473
+    private List<MenuItem> menuItems;
 
     public Restaurant(Integer id, String name, @Nullable String address) {
         super(id, name);

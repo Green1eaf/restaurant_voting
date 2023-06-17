@@ -42,4 +42,12 @@ public class Vote extends BaseEntity {
 
     @Column(name = "restaurant_id")
     private int restaurantId;
+
+    public Vote(Integer id, @NotNull User user, @NotNull LocalDate actualDate, @NotNull LocalTime actualTime, int restaurantId) {
+        super(id);
+        this.user = user;
+        this.actualDate = actualDate;
+        this.actualTime = actualTime;
+        this.restaurantId = restaurantId;
+    }
 }

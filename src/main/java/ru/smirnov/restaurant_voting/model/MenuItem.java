@@ -40,6 +40,7 @@ public class MenuItem extends BaseEntity {
         super(id);
         this.actualDate = actualDate;
         this.restaurant = restaurant;
+        this.dishRef = dishRef;
         this.dishRefId = dishRef.id();
     }
 }

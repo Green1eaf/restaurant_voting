@@ -7,6 +7,7 @@ import ru.smirnov.restaurant_voting.web.AbstractControllerTest;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.smirnov.restaurant_voting.util.RestaurantUtil.withMenu;
 import static ru.smirnov.restaurant_voting.web.restaurant.RestaurantController.REST_URL;
 import static ru.smirnov.restaurant_voting.web.restaurant.RestaurantTestData.*;
 
@@ -18,7 +19,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL_SLASH + "menu_today"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER_WITH_MENU.contentJson(wasabi, mac));
+                .andExpect(RESTAURANT_MATCHER_WITH_MENU.contentJson(withMenu(wasabi), withMenu(mac)));
     }
 
     @Test
@@ -26,7 +27,7 @@ class RestaurantControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL_SLASH + MAC_ID + "/menu_today"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_MATCHER_WITH_MENU.contentJson(mac));
+                .andExpect(RESTAURANT_MATCHER_WITH_MENU.contentJson(withMenu(mac)));
     }
 
     @Test

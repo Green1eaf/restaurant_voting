@@ -23,6 +23,7 @@ spring:
 
   # Jackson Serialization Issue Resolver
   jackson:
+    mapper.default-view-inclusion: true   # https://stackoverflow.com/a/37942375/548473
     visibility:
       field: any
       getter: none

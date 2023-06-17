@@ -1,6 +1,5 @@
 package ru.smirnov.restaurant_voting.web.restaurant;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -8,9 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.smirnov.restaurant_voting.View;
 import ru.smirnov.restaurant_voting.model.Restaurant;
 import ru.smirnov.restaurant_voting.repository.RestaurantRepository;
+import ru.smirnov.restaurant_voting.to.RestaurantWithMenu;
+import ru.smirnov.restaurant_voting.util.RestaurantUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,18 +31,18 @@ public class RestaurantController {
     }
 
     @GetMapping("/menu_today")
-    @JsonView(View.RestaurantWithMeals.class)
-    public List<Restaurant> getWithMenuForToday() {
+    public List<RestaurantWithMenu> getWithMenuForToday() {
         log.info("getWithMenuForToday");
-        return repository.getWithMenuByDate(LocalDate.now());
+        List<Restaurant> restaurants = repository.getWithMenuByDate(LocalDate.now());
+        return RestaurantUtil.withMenu(restaurants);
     }
 
 
     @GetMapping("/{id}/menu_today")
-    @JsonView(View.RestaurantWithMeals.class)
-    public Restaurant getWithMenuByRestaurantForToday(@PathVariable int id) {
+    public RestaurantWithMenu getWithMenuByRestaurantForToday(@PathVariable int id) {
         log.info("getWithMenuByRestaurantForToday {}", id);
         repository.checkAvailable(id);
-        return repository.getWithMenuByRestaurantAndDate(id, LocalDate.now());
+        Restaurant restaurant = repository.getWithMenuByRestaurantAndDate(id, LocalDate.now());
+        return RestaurantUtil.withMenu(restaurant);
     }
 }

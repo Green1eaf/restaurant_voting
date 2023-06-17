@@ -3,6 +3,7 @@ package ru.smirnov.restaurant_voting.web.restaurant;
 import ru.smirnov.restaurant_voting.model.DishRef;
 import ru.smirnov.restaurant_voting.model.MenuItem;
 import ru.smirnov.restaurant_voting.model.Restaurant;
+import ru.smirnov.restaurant_voting.to.RestaurantWithMenu;
 import ru.smirnov.restaurant_voting.web.MatcherFactory;
 import ru.smirnov.restaurant_voting.web.MatcherFactory.Matcher;
 
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class RestaurantTestData {
     public static final Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menuItems");
-    public static final Matcher<Restaurant> RESTAURANT_MATCHER_WITH_MENU = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menuItems.restaurant", "menuItems.dishRef");
+    public static final Matcher<RestaurantWithMenu> RESTAURANT_MATCHER_WITH_MENU = MatcherFactory.usingIgnoringFieldsComparator(RestaurantWithMenu.class, "dishRefs.restaurant");
 
     public static final Matcher<DishRef> DISH_REF_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(DishRef.class, "restaurant");
 
@@ -41,9 +42,10 @@ public class RestaurantTestData {
 
     static {
 //         set menu for today, sorted by name
-        wasabi.setMenuItems(List.of(wasabi_9, wasabi_8, wasabi_7));
+        wasabi.setMenuItems(List.of(wasabi_9, wasabi_7));
         mac.setMenuItems(List.of(mac_1, mac_3, mac_2));
         shalypin.setEnabled(false);
+        wasabi_rf.setEnabled(false);
     }
 
     public static Restaurant getNew() {

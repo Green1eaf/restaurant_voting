@@ -13,6 +13,8 @@ public class RestaurantTestData {
     public static final Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menuItems");
     public static final Matcher<Restaurant> RESTAURANT_MATCHER_WITH_MENU = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class, "menuItems.restaurant", "menuItems.dishRef");
 
+    public static final Matcher<DishRef> DISH_REF_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(DishRef.class, "restaurant");
+
     public static final int MAC_ID = 1;
     public static final int SHALYPIN_ID = 2;
     public static final int WASABI_ID = 3;
@@ -50,5 +52,13 @@ public class RestaurantTestData {
 
     public static Restaurant getUpdated() {
         return new Restaurant(MAC_ID, "Мак", "ул. Урицкого, 33");
+    }
+
+    public static DishRef getNewDish() {
+        return new DishRef(null, "Новая Мак-еда", 12000, mac);
+    }
+
+    public static DishRef getUpdatedDish() {
+        return new DishRef(mac_fof.id(), "Филе-о-Фиш-2", 13500, mac);
     }
 }

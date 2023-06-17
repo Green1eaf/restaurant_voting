@@ -29,4 +29,11 @@ public class MenuItem extends NamedEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Restaurant restaurant;
+
+    public MenuItem(Integer id, String name, int price, @NotNull LocalDate actualDate, Restaurant restaurant) {
+        super(id, name);
+        this.price = price;
+        this.actualDate = actualDate;
+        this.restaurant = restaurant;
+    }
 }

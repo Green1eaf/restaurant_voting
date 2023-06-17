@@ -8,10 +8,10 @@ VALUES ('USER', 1),
        ('ADMIN', 2),
        ('USER', 2);
 
-INSERT INTO RESTAURANT (NAME, ADDRESS)
-VALUES ('Макдоналдс', 'ул. Зеленая, 31'),
-       ('Шаляпин', 'ул. Мира, 67'),
-       ('Васаби', 'ул. Бумажная, д.20');
+INSERT INTO RESTAURANT (NAME, ADDRESS, ENABLED)
+VALUES ('Макдоналдс', 'ул. Зеленая, 31', true),
+       ('Шаляпин', 'ул. Мира, 67', false),
+       ('Васаби', 'ул. Бумажная, д.20', true);
 
 INSERT INTO MENU_ITEM (NAME, PRICE, ACTUAL_DATE, RESTAURANT_ID)
 VALUES

@@ -32,7 +32,6 @@ public class Restaurant extends NamedEntity {
     private String address;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    @OrderBy("name ASC")
     @OnDelete(action = OnDeleteAction.CASCADE) //https://stackoverflow.com/a/44988100/548473
     @JsonView(View.RestaurantWithMeals.class)
     @Schema(hidden = true)

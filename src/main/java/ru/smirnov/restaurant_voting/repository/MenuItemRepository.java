@@ -15,10 +15,10 @@ public interface MenuItemRepository extends BaseRepository<MenuItem> {
     @Query("SELECT mi FROM MenuItem mi WHERE mi.id=:id AND mi.restaurant.id=:restaurantId")
     Optional<MenuItem> get(int restaurantId, int id);
 
-    @Query("SELECT mi from MenuItem mi WHERE mi.restaurant.id=:restaurantId AND mi.actualDate = :date ORDER BY mi.name ASC")
+    @Query("SELECT mi from MenuItem mi WHERE mi.restaurant.id=:restaurantId AND mi.actualDate = :date ORDER BY mi.dishRef.name ASC")
     List<MenuItem> getByRestaurantAndDate(int restaurantId, LocalDate date);
 
-    @Query("SELECT mi FROM MenuItem mi WHERE mi.restaurant.id=:restaurantId ORDER BY mi.actualDate DESC, mi.name ASC")
+    @Query("SELECT mi FROM MenuItem mi WHERE mi.restaurant.id=:restaurantId ORDER BY mi.actualDate DESC, mi.dishRef.name ASC")
     List<MenuItem> getByRestaurant(int restaurantId);
 
     default MenuItem checkExistOrBelong(int restaurantId, int id) {

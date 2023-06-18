@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.smirnov.restaurant_voting.mapper.RestaurantMapper;
 import ru.smirnov.restaurant_voting.model.Restaurant;
 import ru.smirnov.restaurant_voting.repository.RestaurantRepository;
 import ru.smirnov.restaurant_voting.to.RestaurantWithMenu;
-import ru.smirnov.restaurant_voting.util.RestaurantUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +24,7 @@ public class RestaurantController {
     static final String REST_URL = "/api/restaurants";
 
     private final RestaurantRepository repository;
+    private final RestaurantMapper mapper;
 
     @GetMapping
     @Cacheable("restaurants")
@@ -37,7 +38,7 @@ public class RestaurantController {
     public List<RestaurantWithMenu> getWithMenuForToday() {
         log.info("getWithMenuForToday");
         List<Restaurant> restaurants = repository.getWithMenuByDate(LocalDate.now());
-        return RestaurantUtil.withMenu(restaurants);
+        return mapper.toToList(restaurants);
     }
 
 
@@ -47,6 +48,6 @@ public class RestaurantController {
         log.info("getWithMenuByRestaurantForToday {}", id);
         repository.checkAvailable(id);
         Restaurant restaurant = repository.getWithMenuByRestaurantAndDate(id, LocalDate.now());
-        return RestaurantUtil.withMenu(restaurant);
+        return mapper.toTo(restaurant);
     }
 }

@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.util.CollectionUtils;
 import ru.smirnov.restaurant_voting.HasIdAndEmail;
+import ru.smirnov.restaurant_voting.mapper.Default;
 import ru.smirnov.restaurant_voting.util.validation.NoHtml;
 
 import java.util.*;
@@ -61,6 +62,7 @@ public class User extends NamedEntity implements HasIdAndEmail {
         this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles);
     }
 
+    @Default
     public User(Integer id, String name, String email, String password, Role... roles) {
         this(id, name, email, password, true, new Date(), Arrays.asList(roles));
     }

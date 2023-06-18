@@ -1,6 +1,7 @@
 package ru.smirnov.restaurant_voting.web.user;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,9 +10,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.smirnov.restaurant_voting.mapper.UserMapper;
 import ru.smirnov.restaurant_voting.model.User;
 import ru.smirnov.restaurant_voting.to.UserTo;
-import ru.smirnov.restaurant_voting.util.UsersUtil;
 import ru.smirnov.restaurant_voting.web.AuthUser;
 
 import java.net.URI;
@@ -22,8 +23,11 @@ import static ru.smirnov.restaurant_voting.util.validation.ValidationUtil.checkN
 @RestController
 @RequestMapping(value = ProfileController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
+@RequiredArgsConstructor
 public class ProfileController extends AbstractUserController {
     static final String REST_URL = "/api/profile";
+
+    private final UserMapper mapper;
 
     @GetMapping
     public User get(@AuthenticationPrincipal AuthUser authUser) {
@@ -42,7 +46,7 @@ public class ProfileController extends AbstractUserController {
     public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
         log.info("register {}", userTo);
         checkNew(userTo);
-        User created = repository.prepareAndSave(UsersUtil.createNewFromTo(userTo));
+        User created = repository.prepareAndSave(mapper.toEntity(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL).build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
@@ -55,6 +59,6 @@ public class ProfileController extends AbstractUserController {
         log.info("update {} with id={}", userTo, authUser.id());
         assureIdConsistent(userTo, authUser.id());
         User user = authUser.getUser();
-        repository.prepareAndSave(UsersUtil.updateFromTo(user, userTo));
+        repository.prepareAndSave(mapper.updateFromTo(user, userTo));
     }
 }

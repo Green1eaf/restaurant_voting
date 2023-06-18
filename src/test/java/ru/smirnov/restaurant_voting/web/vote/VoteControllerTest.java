@@ -32,6 +32,8 @@ class VoteControllerTest extends AbstractControllerTest {
 
     @Autowired
     private VoteRepository repository;
+    @Autowired
+    private VoteService service;
 
     @Test
     @WithUserDetails(value = USER_MAIL)
@@ -83,7 +85,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void revoteTodayBeforeDeadline() throws Exception {
-        VoteService.setDeadline(LocalTime.MAX);
+        service.setDeadline(LocalTime.MAX);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .param("restaurantId", Integer.toString(WASABI_ID))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -94,7 +96,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void revoteTodayAfterDeadline() throws Exception {
-        VoteService.setDeadline(LocalTime.MIN);
+        service.setDeadline(LocalTime.MIN);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .param("restaurantId", Integer.toString(WASABI_ID))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -105,7 +107,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void deleteTodayBeforeDeadline() throws Exception {
-        VoteService.setDeadline(LocalTime.MAX);
+        service.setDeadline(LocalTime.MAX);
         perform(MockMvcRequestBuilders.delete(REST_URL)
                 .param("restaurantId", Integer.toString(WASABI_ID)))
                 .andExpect(status().isNoContent());
@@ -115,7 +117,7 @@ class VoteControllerTest extends AbstractControllerTest {
     @Test
     @WithUserDetails(value = USER_MAIL)
     void deleteTodayAfterDeadline() throws Exception {
-        VoteService.setDeadline(LocalTime.MIN);
+        service.setDeadline(LocalTime.MIN);
         perform(MockMvcRequestBuilders.delete(REST_URL)
                 .param("restaurantId", Integer.toString(WASABI_ID)))
                 .andDo(print())

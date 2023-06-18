@@ -1,8 +1,10 @@
 package ru.smirnov.restaurant_voting.service;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 import ru.smirnov.restaurant_voting.error.DataConflictException;
 import ru.smirnov.restaurant_voting.model.User;
@@ -15,13 +17,15 @@ import java.time.LocalTime;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class VoteService {
     private final VoteRepository repository;
     private final RestaurantRepository restaurantRepository;
 
     @Setter
-    static LocalTime deadline = LocalTime.of(11, 0);
+    @Value("${app.deadline}")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
+    LocalTime deadline;
 
     @Transactional
     public Vote createToday(User user, int restaurantId) {

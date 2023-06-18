@@ -6,11 +6,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.smirnov.restaurant_voting.mapper.UserMapper;
 import ru.smirnov.restaurant_voting.model.User;
 import ru.smirnov.restaurant_voting.repository.UserRepository;
 import ru.smirnov.restaurant_voting.to.UserTo;
 import ru.smirnov.restaurant_voting.util.JsonUtil;
-import ru.smirnov.restaurant_voting.util.UsersUtil;
 import ru.smirnov.restaurant_voting.web.AbstractControllerTest;
 
 import static org.hamcrest.Matchers.containsString;
@@ -24,6 +24,9 @@ class ProfileControllerTest extends AbstractControllerTest {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private UserMapper mapper;
 
     @Test
     @WithUserDetails(value = USER_MAIL)
@@ -51,7 +54,7 @@ class ProfileControllerTest extends AbstractControllerTest {
     @Test
     void register() throws Exception {
         UserTo newTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
-        User newUser = UsersUtil.createNewFromTo(newTo);
+        User newUser = mapper.toEntity(newTo);
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newTo)))
@@ -74,7 +77,7 @@ class ProfileControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        USER_MATCHER.assertMatch(repository.getExisted(USER_ID), UsersUtil.updateFromTo(new User(user), updatedTo));
+        USER_MATCHER.assertMatch(repository.getExisted(USER_ID), mapper.updateFromTo(new User(user), updatedTo));
     }
 
     @Test

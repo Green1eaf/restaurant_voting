@@ -2,6 +2,8 @@ package ru.smirnov.restaurant_voting.web.restaurant;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +40,7 @@ public class AdminDishRefController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    // No cache evict: couldn't delete, if used in MenuItem
     public void delete(@PathVariable int restaurantId, @PathVariable int id) {
         log.info("delete for restaurantId={}, id={}", restaurantId, id);
         DishRef dishRef = repository.checkExistOrBelong(restaurantId, id);
@@ -63,6 +66,11 @@ public class AdminDishRefController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    // https://stackoverflow.com/questions/25379051/548473
+    @Caching(evict = {
+            @CacheEvict(value = "allRestaurantsWithMenu", allEntries = true),
+            @CacheEvict(value = "restaurantWithMenu", key = "#restaurantId")
+    })
     public void update(@PathVariable int restaurantId, @PathVariable int id, @Valid @RequestBody DishRef dishRef) {
         log.info("update {} for restaurantId={}, id={}", dishRef, restaurantId, id);
         assureIdConsistent(dishRef, id);
@@ -73,6 +81,10 @@ public class AdminDishRefController {
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "allRestaurantsWithMenu", allEntries = true),
+            @CacheEvict(value = "restaurantWithMenu", key = "#restaurantId")
+    })
     public void enable(@PathVariable int restaurantId, @PathVariable int id, @RequestParam boolean enabled) {
         log.info(enabled ? "enable {}" : "disable {}", id);
         DishRef dishRef = repository.checkExistOrBelong(restaurantId, id);

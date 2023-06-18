@@ -2,6 +2,7 @@ package ru.smirnov.restaurant_voting.web.restaurant;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,12 +26,14 @@ public class RestaurantController {
     private final RestaurantRepository repository;
 
     @GetMapping
+    @Cacheable("restaurants")
     public List<Restaurant> getAllEnabled() {
         log.info("getAllEnabled");
         return repository.getAllEnabled();
     }
 
     @GetMapping("/menu_today")
+    @Cacheable("allRestaurantsWithMenu")
     public List<RestaurantWithMenu> getWithMenuForToday() {
         log.info("getWithMenuForToday");
         List<Restaurant> restaurants = repository.getWithMenuByDate(LocalDate.now());
@@ -39,6 +42,7 @@ public class RestaurantController {
 
 
     @GetMapping("/{id}/menu_today")
+    @Cacheable("restaurantWithMenu")
     public RestaurantWithMenu getWithMenuByRestaurantForToday(@PathVariable int id) {
         log.info("getWithMenuByRestaurantForToday {}", id);
         repository.checkAvailable(id);
